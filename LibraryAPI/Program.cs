@@ -1,11 +1,26 @@
 
+using LibraryAPI.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace LibraryAPI
 {
+    public class LibraryContext : DbContext
+    {
+        public LibraryContext(DbContextOptions<LibraryContext> options) : base(options) { }
+
+        public DbSet<Book> Books { get; set; }
+    }
     public class Program
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            
+
+
+            builder.Services.AddDbContext<LibraryContext>(options =>
+            options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+            ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
 
             // Add services to the container.
 
