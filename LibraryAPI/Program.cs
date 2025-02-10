@@ -1,6 +1,8 @@
 
 using LibraryAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using RestFull.Repositories.Interfaces;
+using RestFull.Repositories.Services;
 
 namespace LibraryAPI
 {
@@ -10,19 +12,23 @@ namespace LibraryAPI
 
         public DbSet<Book> Books { get; set; }
     }
+
     public class Program
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            
 
 
-            builder.Services.AddDbContext<LibraryContext>(options =>
+            builder.Services.AddDbContext<LibrarydbContext>(options =>
             options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
             ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
 
+
+
             // Add services to the container.
+            builder.Services.AddScoped<IBookInterface, BookService>();
+
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
